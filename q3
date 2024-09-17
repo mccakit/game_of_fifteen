@@ -1,0 +1,91 @@
+#include <iostream>
+
+class IntArray
+{
+public:
+    IntArray(int i):
+        arr_start{new int[i]},
+        arr_len{i}
+    {
+    }
+
+    IntArray(const IntArray &arr):
+        arr_len{arr.arr_len}
+    {
+        arr_start = new int[arr.arr_len];
+        for (int count{0}; count < arr.arr_len; ++count)
+        {
+            arr_start[count] = arr.arr_start[count];
+        }
+    }
+
+    ~IntArray()
+    {
+        delete[] arr_start;
+    }
+
+    int &operator[](int i)
+    {
+        return arr_start[i];
+    }
+
+    IntArray &operator =(const IntArray &arr)
+    {
+        if (this == &arr)
+        {
+            return *this;
+        }
+        arr_len = arr.arr_len;
+        arr_start = new int[arr_len];
+        for (int count{0}; count < arr_len; ++count)
+        {
+            arr_start[count] = arr.arr_start[count];
+        }
+        return *this;
+    }
+
+    friend std::ostream &operator <<(std::ostream &out, IntArray &arr)
+    {
+        for (int i{}; i < arr.arr_len; ++i)
+        {
+            out << arr.arr_start[i] << ",";
+        }
+        return out;
+    }
+
+private:
+    int *arr_start{nullptr};
+    int arr_len{0};
+};
+
+IntArray fillArray()
+{
+    IntArray a(5);
+
+    a[0] = 5;
+    a[1] = 8;
+    a[2] = 2;
+    a[3] = 3;
+    a[4] = 6;
+
+    return a;
+}
+
+int main()
+{
+    IntArray a{fillArray()};
+
+    std::cout << a << '\n';
+
+    auto &ref{a}; // we're using this reference to avoid compiler self-assignment errors
+    a = ref;
+
+    IntArray b(1);
+    b = a;
+
+    a[4] = 7;
+
+    std::cout << b << '\n';
+
+    return 0;
+}

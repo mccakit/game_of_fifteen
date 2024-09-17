@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cstdint>
+
+class Average
+{
+public:
+    Average()=default;
+    Average(int ncount,int sum):
+    m_ncount {static_cast<int8_t>(ncount)},
+    m_sum {static_cast<int32_t>(sum)}
+    {}
+    Average& operator += (const int i)
+    {
+        m_ncount += 1;
+        m_sum += i;
+        return *this;
+    }
+    friend std::ostream& operator << (std::ostream& out,const Average avg)
+    {
+        out << static_cast<double>(avg.m_sum) /avg.m_ncount;
+        return out;
+    }
+    void print()
+    {
+        std::cout << static_cast<int>(m_ncount) << "," << static_cast<int>(m_sum) << "\n";
+    }
+private:
+    std::int8_t m_ncount{0};
+    std::int32_t m_sum{0};
+};
+
+int main()
+{
+    Average avg{};
+
+    avg += 4;
+    std::cout << avg << '\n'; // 4 / 1 = 4
+
+    avg += 8;
+    std::cout << avg << '\n'; // (4 + 8) / 2 = 6
+
+    avg += 24;
+    std::cout << avg << '\n'; // (4 + 8 + 24) / 3 = 12
+
+    avg += -10;
+    std::cout << avg << '\n'; // (4 + 8 + 24 - 10) / 4 = 6.5
+
+    (avg += 6) += 10; // 2 calls chained together
+    std::cout << avg << '\n'; // (4 + 8 + 24 - 10 + 6 + 10) / 6 = 7
+
+    Average copy{ avg };
+    std::cout << copy << '\n';
+    return 0;
+}

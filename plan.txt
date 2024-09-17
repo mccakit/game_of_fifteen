@@ -1,0 +1,33 @@
+General:
+    Board:
+        generate the board
+        swap tiles on the board
+        print the board
+    Game:
+        Ask for an input
+        Check for success
+        Check if user wants to quit
+Structure:
+    2DArray Class:
+         stores a 2-dimensional array
+         overloads parenthesis operator to do access array elements
+         overloads ostream to print the array
+    Board Class:
+        stores a 2DArray class
+        stores the current location of empty element
+        has a function that can do swap operations
+        has a function that can shuffle an array
+    Functions:
+        take a char input from user, make sure its valid.
+Main Loop:
+    initialize the board
+    shuffle the board
+    Game Loop:
+        print the board
+        check for success
+        ask for an input
+        check if user wants to quit
+        do a swap operation
+
+
+

@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct StudentGrade
+{
+    std::string name;
+    char grade;
+};
+
+class GradeMap
+{
+public:
+    char &operator[](const std::string &name)
+    {
+        for (auto &student: m_map)
+        {
+            if (student.name == name)
+            {
+                return student.grade;
+            }
+        }
+
+        m_map.push_back({name, ' '});
+        return m_map.back().grade;
+    }
+
+private:
+    std::vector<StudentGrade> m_map;
+};
+
+class MyString
+{
+public:
+    MyString(std::string_view str):
+    m_str {str}
+    {}
+    friend std::ostream &operator <<(std::ostream &out, MyString str)
+    {
+        out << str.m_str;
+        return out;
+    }
+
+    std::string operator() (int i_start,int i_end)
+    {
+        return m_str.substr(i_start,i_end);
+    }
+
+private:
+    std::string m_str{};
+};
+
+int main()
+{
+    GradeMap grades;
+
+    grades["Joe"] = 'A';
+    grades["Frank"] = 'B';
+
+    std::cout << "Joe has a grade of " << grades["Joe"] << '\n';
+    std::cout << "Frank has a grade of " << grades["Frank"] << '\n';
+
+    MyString s { "Hello, world!" };
+    std::cout << s(7, 5) << '\n'; // start at index 7 and return 5 characters
+
+    return 0;
+}

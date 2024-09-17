@@ -1,0 +1,68 @@
+#include <iostream>
+
+class Fraction
+{
+public:
+    Fraction()=default;
+    Fraction(const int numerator, const int denumarator):
+        m_numerator{numerator},
+        m_denumarator{denumarator}
+    {
+    }
+
+    void print() const
+    {
+        std::cout << m_numerator << "/" << m_denumarator << "\n";
+    }
+
+    friend Fraction operator *(const Fraction &f1, const Fraction &f2)
+    {
+        return Fraction{f1.m_numerator * f2.m_numerator, f1.m_denumarator * f2.m_denumarator};
+    }
+
+    friend Fraction operator *(const Fraction &f1, const int i)
+    {
+        return Fraction{f1.m_numerator * i, f1.m_denumarator};
+    }
+
+    friend Fraction operator *(const int i, const Fraction &f1)
+    {
+        return Fraction{f1.m_numerator * i, f1.m_denumarator};
+    }
+
+    friend std::ostream& operator <<(std::ostream& out, const Fraction&f)
+    {
+        out << f.m_numerator << "/" << f.m_denumarator;
+        return out;
+    }
+    friend std::istream& operator >>(std::istream& in, Fraction&f)
+    {
+        int num{}, dnum{};
+        in >> num >> dnum;
+        if (in)
+        {
+            f.m_numerator = num;
+            f.m_denumarator = dnum;
+        }
+        return in;
+    }
+
+private:
+    int m_numerator{0};
+    int m_denumarator{1};
+};
+
+int main()
+{
+    Fraction f1{};
+    std::cout << "Enter fraction 1: ";
+    std::cin >> f1;
+
+    Fraction f2{};
+    std::cout << "Enter fraction 2: ";
+    std::cin >> f2;
+
+    std::cout << f1 << " * " << f2 << " is " << f1 * f2 << '\n'; // note: The result of f1 * f2 is an r-value
+
+    return 0;
+}
